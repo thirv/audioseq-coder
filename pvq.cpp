@@ -19,33 +19,33 @@ unsigned long long pvq_N2(unsigned int l,unsigned int K)
 
 unsigned long long pvq_N3(unsigned int l, unsigned int K, vector<vector<unsigned long long>> out)
 {
-    if(K==0)
-        return 1;
-    else if(l==0)
-        return 0;
-    else if(l==1)
-        return 2;
-    else if(K==1)
-        return 2*l;
-    else {
-        unsigned long long v1, v2, v3;
-        v1 = K<out[l-1].size() ? out[l-1][K] : pvq_N3(l-1,K,out);
-        v2 = (K-1)<out[l-1].size() ? out[l-1][K-1] : pvq_N3(l-1,K-1,out);
-        v3 = (K-1)<out[l].size() ? out[l][K-1] : pvq_N3(l,K-1,out);
-        return v1 + v2 + v3;
-    }
+	if(K==0)
+		return 1;
+	else if(l==0)
+		return 0;
+	else if(l==1)
+		return 2;
+	else if(K==1)
+		return 2*l;
+	else {
+		unsigned long long v1, v2, v3;
+		v1 = K<out[l-1].size() ? out[l-1][K] : pvq_N3(l-1,K,out);
+		v2 = (K-1)<out[l-1].size() ? out[l-1][K-1] : pvq_N3(l-1,K-1,out);
+		v3 = (K-1)<out[l].size() ? out[l][K-1] : pvq_N3(l,K-1,out);
+		return v1 + v2 + v3;
+	}
 }
 
 
 vector<vector<unsigned long long>> pvq_Npre(unsigned int l, vector<unsigned int> k)
 {
-    vector<vector<unsigned long long>> out(l+1);
-    for(unsigned int li=0;li<=l;li++){
-        for(unsigned int ki=0;ki<=k[li];ki++){
-            out[li].push_back(pvq_N3(li,ki,out));
-        }
-    }
-    return out;
+	vector<vector<unsigned long long>> out(l+1);
+	for(unsigned int li=0;li<=l;li++){
+		for(unsigned int ki=0;ki<=k[li];ki++){
+			out[li].push_back(pvq_N3(li,ki,out));
+        	}
+    	}
+    	return out;
 }
 
 
