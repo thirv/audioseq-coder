@@ -100,7 +100,7 @@ vector<bool> generate_frbs(const vector<vector<float>> &fre, settings &s)
 	vector<vector<int>> env(s.nro_ch,vector<int>(s.nro_bands));
 	vector<vector<float>> enes(s.nro_ch,vector<float>(s.nro_bands));
 	vector<bool> out;
-    out.reserve(s.rate_fr);
+    	out.reserve(s.rate_fr);
 	//auto ene_tot = 1e-30f;
 	for(unsigned int ch = 0; ch<s.nro_ch; ch++) {
 		for(unsigned int b = 0; b<s.nro_bands; b++) {
@@ -114,7 +114,7 @@ vector<bool> generate_frbs(const vector<vector<float>> &fre, settings &s)
 			//ene_tot += enes[ch][b];
 		}
 	}
-    auto newk = adjust_k(floor((s.rate_fr-out.size())/s.nro_ch), s);
+    	auto newk = adjust_k(floor((s.rate_fr-out.size())/s.nro_ch), s);
 	for(unsigned int ch = 0; ch<s.nro_ch; ch++) {
 		for(unsigned int b = 0; b<s.nro_bands; b++) {
 			vector<float> band(fre[ch].begin()+s.blims[b],fre[ch].begin()+s.blims[b+1]);
@@ -130,8 +130,8 @@ vector<bool> generate_frbs(const vector<vector<float>> &fre, settings &s)
 			}
 		}
 	}
-    while (out.size()<s.rate_fr)
-        out.push_back(0); // make sure out size has desired num of bytes
+    	while (out.size()<s.rate_fr)
+        	out.push_back(0); // make sure out size has desired num of bytes
 	return out;
 }
 
@@ -159,7 +159,7 @@ vector<vector<float>> parse_frbs(const vector<bool> &fr_bs, settings &s)
 			s.pre_norms_dec[ch][b] = env[ch][b];
 		}
 	}
-    auto newk = adjust_k(floor((s.rate_fr-bi)/s.nro_ch), s);
+    	auto newk = adjust_k(floor((s.rate_fr-bi)/s.nro_ch), s);
 	vector<vector<float>> fre(s.nro_ch,vector<float>(s.frame_size,0));
 	for(unsigned int ch = 0; ch<s.nro_ch; ch++) {
 		for(unsigned int b = 0; b<s.nro_bands; b++) {
@@ -172,7 +172,7 @@ vector<vector<float>> parse_frbs(const vector<bool> &fr_bs, settings &s)
 					bi += 1;
 				}
 				auto band = pvq_decode(val,l,newk[b],s.pvqN);
-                copy(band.begin(),band.end(),fre[ch].begin()+s.blims[b]);
+                		copy(band.begin(),band.end(),fre[ch].begin()+s.blims[b]);
 				//copy(s.dbg_fre[ch].begin()+s.blims[b],s.dbg_fre[ch].begin()+s.blims[b+1],fre[ch].begin()+s.blims[b]);
 			}
 			else {
@@ -191,33 +191,33 @@ vector<vector<float>> parse_frbs(const vector<bool> &fr_bs, settings &s)
 
 vector<unsigned int> adjust_k(unsigned int target_rate, const settings &s)
 {
-    // assume each change is less than 2 bits?
-    auto newk = s.prek;
-    unsigned int rate = 0;
-    for (unsigned int b=0; b<s.copy_lim; b++)
-        rate += ceil(log2(s.pvqN[s.bwidths[b]][s.prek[b]]));
-    if (target_rate>rate) {
-        auto i = 0;
-        while (true) {
-            rate -= ceil(log2(s.pvqN[s.bwidths[i]][newk[i]])) - ceil(log2(s.pvqN[s.bwidths[i]][newk[i]+1]));
-            if (target_rate<rate)
-                break;
-            newk[i] += 1;
-            i = (i+1) % s.copy_lim;
-        }
-    }
-    else if (target_rate<rate) {
-        auto i = 0;
-        while (true) {
-            rate -= ceil(log2(s.pvqN[s.bwidths[s.copy_lim-i-1]][newk[s.copy_lim-i-1]])) -
-                ceil(log2(s.pvqN[s.bwidths[s.copy_lim-i-1]][newk[s.copy_lim-i-1]-1]));
-            if (target_rate>rate)
-                break;
-            newk[s.copy_lim-i-1] -= 1;
-            i = (i+1) % s.copy_lim;
-        }
-    }
-    return newk;
+    	// assume each change is less than 2 bits?
+    	auto newk = s.prek;
+    	unsigned int rate = 0;
+    	for (unsigned int b=0; b<s.copy_lim; b++)
+        	rate += ceil(log2(s.pvqN[s.bwidths[b]][s.prek[b]]));
+    	if (target_rate>rate) {
+        	auto i = 0;
+        	while (true) {
+            		rate -= ceil(log2(s.pvqN[s.bwidths[i]][newk[i]])) - ceil(log2(s.pvqN[s.bwidths[i]][newk[i]+1]));
+            		if (target_rate<rate)
+                		break;
+            	newk[i] += 1;
+            	i = (i+1) % s.copy_lim;
+        	}
+    	}
+    	else if (target_rate<rate) {
+        	auto i = 0;
+        	while (true) {
+            		rate -= ceil(log2(s.pvqN[s.bwidths[s.copy_lim-i-1]][newk[s.copy_lim-i-1]])) -
+                	ceil(log2(s.pvqN[s.bwidths[s.copy_lim-i-1]][newk[s.copy_lim-i-1]-1]));
+            	if (target_rate>rate)
+                	break;
+            	newk[s.copy_lim-i-1] -= 1;
+            	i = (i+1) % s.copy_lim;
+        	}
+    	}
+    	return newk;
 }
 
 
