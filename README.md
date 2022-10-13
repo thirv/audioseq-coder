@@ -7,7 +7,7 @@ Unlike typical audio codecs that operate on audio frames, this is tailored towar
 - coder.cpp includes the encoder and decoder to generate and extract audio bitsream. 
 - bs.cpp has the entropy coding
 - filebs.cpp includes bitsream construction via manipulating bytes and file writing
-- pcm.hpp implements audio file reading
+- pcm.cpp implements audio file reading
 - mdct.cpp implementation of https://en.wikipedia.org/wiki/Modified_discrete_cosine_transform
 - pvq.cpp implementation of https://en.wikipedia.org/wiki/Pyramid_vector_quantization
 
