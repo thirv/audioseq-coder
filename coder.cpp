@@ -15,22 +15,21 @@ settings init_coder(unsigned int frame_size, unsigned int fs)
 	s.fs = fs;
 	s.mdct_size = 2 * frame_size;
 	s.tw = mdct_init(2*frame_size);
-	s.blims = //{0,4,8,13,18,25,32,40,50,61,75,90,106,122,138,154,170,186,202,218,234,250,266,282,298,314,330,346,362,378,394,410,426,442,458,474,550,655,765,893,1042,1216,1418,2048};
-		//{0,4,8,12,16,24,32,40,56,72,88,112,144,176,224,280,336,392,448,544,672,1024};
-		{0,4,8,12,16,24,32,40,56,72,88,104,120,136,152,168,184,200,216,232,248,264,280,296,312,328,344,360,376,392,408,424,440,
-            544,672,1024};
-    for (unsigned int i=1; i<s.blims.size(); i++)
-        s.bwidths.push_back(s.blims[i]-s.blims[i-1]);
-    s.prek = {16,14,12,10,16,14,12,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,
-            16,16,16,16,16,16,16,0,0,0};
+	s.blims = {0,4,8,12,16,24,32,40,56,72,88,104,120,136,152,168,184,200,216,232,248,264,280,296,
+		   312,328,344,360,376,392,408,424,440,544,672,1024};
+    	for (unsigned int i=1; i<s.blims.size(); i++){
+        	s.bwidths.push_back(s.blims[i]-s.blims[i-1]);
+	}
+    	s.prek = {16,14,12,10,16,14,12,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,
+		  16,16,16,16,0,0,0};
 	s.nro_bands = (unsigned int)s.blims.size() - 1;
 	s.band_spread = {0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,0,0,0}; // not used yet, how many neighbor bands are grouped together in sperad analysis
 	s.copy_lim = 32;//; // 18 35 copy bins above and including this band (0-based index)
 	s.nocopy_lim = 4;//; // never copy below and including this band (0-based index)
 	s.target_rate = 64000; //nominal target in bits/s TODO as input
-    s.bytes_fr = ceil(s.target_rate*s.frame_size/fs/8.0);
-    s.rate_fr = s.bytes_fr * 8;
-    s.pvqN = pvq_Npre(26,vector<unsigned int>(27,26));//pvq_Npre(16,{16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16});
+	s.bytes_fr = ceil(s.target_rate*s.frame_size/fs/8.0);
+	s.rate_fr = s.bytes_fr * 8;
+	s.pvqN = pvq_Npre(26,vector<unsigned int>(27,26));//pvq_Npre(16,{16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16});
 	s.frew = get_perw(frame_size, fs);//.resize(frame_size,1.0f);//
 	return s;
 }
