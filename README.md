@@ -1,5 +1,5 @@
 # audioseq-coder
-Compact audio coder for audio sequences. Motivation is to use pure modern C++ (currently C++11) limited to standard library. Somewhat functional programming style.
+Compact audio coder for audio sequences. Motivation is to use pure modern C++ (currently C++11) limited to standard library. Somewhat functional programming style, which suits audio processing in my oppinion better than OO.
 
 Unlike typical audio codecs that operate on audio frames, this is tailored toward compressing separate audio files and repeating them according to the pattern playing defined in seq.txt. This is suitable for music that has many audio elements/segments/objects (short or long) that repeat, such as electronic music. The principles used in the compression are typical ones used in audio compression; MDCT transform, quantization, and entropy coding to a maximally compact bitsream. Some preliminary ideas for exploiting correlations between the sequences/objects via PCA (https://en.wikipedia.org/wiki/Principal_component_analysis), and compressing only the largest eigenvectors.
 
